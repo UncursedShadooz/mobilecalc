@@ -1,2 +1,2 @@
-# mobileclicker
+# mobilecalc
 # create a mobile ...
