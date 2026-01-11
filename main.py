@@ -16,8 +16,22 @@ Builder.load_string("""
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: 'Welcome to the Menu!"
+            text: 'Welcome to the Menu!'
             font_size: 32
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text: 'Calculator'
+                on_press: root.manager.current = 'Calculator'
+            Button:
+                text: 'Settings'
+                on_press: root.manager.current = 'Settings'
+<Settings>
+    BoxLayout:
+        orientation: 'horizontal'
+        Button:
+            text: 'exit'
+            on_press: root.manager.current = 'Menu'
 <Calculator>:
     BoxLayout:
         orientation: 'vertical'
@@ -90,9 +104,17 @@ Builder.load_string("""
             Button:
                 text: '/'
                 on_press: root.set_operator(self.text)
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text: 'exit'
+                on_press: root.manager.current = 'Menu'
 """)
 
 class Menu(Screen):
+    pass
+
+class Settings(Screen):
     pass
 
 class Calculator(Screen):
@@ -139,11 +161,18 @@ class Calculator(Screen):
 class ScreenApp(App):
     def build(self):
         sm = ScreenManager()
+        sm.add_widget(Menu(name='Menu'))
         sm.add_widget(Calculator(name='Calculator'))
+        sm.add_widget(Settings(name='Settings'))
         return sm
 
 if __name__ == '__main__':
     ScreenApp().run()
+
+# tasks:
+# make a menu screen
+# add screen switching buttons
+
 
 # from kivy.uix.popup import Popup
 # from kivy.uix.label import Label
