@@ -24,14 +24,58 @@ Builder.load_string("""
                 text: 'Calculator'
                 on_press: root.manager.current = 'Calculator'
             Button:
+                text: 'Dictionary'
+                on_press: root.manager.current = 'Dictionary'
+            Button:
                 text: 'Settings'
                 on_press: root.manager.current = 'Settings'
-<Settings>
+                    
+<Settings>:
     BoxLayout:
-        orientation: 'horizontal'
+        orientation: 'vertical'
+        Label:
+            text: 'Settings'
+            font_size: 32
         Button:
             text: 'exit'
             on_press: root.manager.current = 'Menu'
+
+<Dictionary>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Welcome to the Dictionary!'
+            font_size: 32
+        Button:
+            text: 'Quintessential'
+            on_press: root.manager.current = 'Quintessential'
+        Button:
+            text: 'Dictionary (programming)'
+            on_press: root.manager.current = 'Dictionary_definition'
+        Button:
+            text: 'exit'
+            on_press: root.manager.current = 'Menu'
+                    
+<Quintessential>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Quintessential means representing the most perfect or typical example of a quality or class.'
+            
+        Button:
+            text: 'exit'
+            on_press: root.manager.current = 'Dictionary'
+                    
+<Dictionary_programming>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'A dictionary is a collection of key-value pairs.'
+            font_size: 24
+        Button:
+            text: 'exit'
+            on_press: root.manager.current = 'Dictionary'
+                    
 <Calculator>:
     BoxLayout:
         orientation: 'vertical'
@@ -117,6 +161,15 @@ class Menu(Screen):
 class Settings(Screen):
     pass
 
+class Dictionary(Screen):
+    pass
+
+class Quintessential(Screen):
+    pass
+
+class Dictionary_programming(Screen):
+    pass
+
 class Calculator(Screen):
     display_text = StringProperty("")
     first_value = ""
@@ -163,6 +216,9 @@ class ScreenApp(App):
         sm = ScreenManager()
         sm.add_widget(Menu(name='Menu'))
         sm.add_widget(Calculator(name='Calculator'))
+        sm.add_widget(Dictionary(name='Dictionary'))
+        sm.add_widget(Quintessential(name='Quintessential'))
+        sm.add_widget(Dictionary_programming(name='Dictionary_definition'))
         sm.add_widget(Settings(name='Settings'))
         return sm
 
