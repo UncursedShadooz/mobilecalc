@@ -5,10 +5,11 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.lang import Builder
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ListProperty
 
 # Define the screens in Kv language for cleaner structure
 Builder.load_string("""
@@ -53,9 +54,36 @@ Builder.load_string("""
             text: 'Dictionary (programming)'
             on_press: root.manager.current = 'Dictionary_definition'
         Button:
+            text: 'Questionnaire'
+            on_press: root.manager.current = 'Questionnaire'
+        Button:
             text: 'exit'
             on_press: root.manager.current = 'Menu'
-                    
+
+<Questionnaire>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Questionnaire'
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: root.question
+            GridLayout:
+                cols: 2
+                rows: 2
+                ToggleButton:
+                    text: root.options[0]
+                ToggleButton:
+                    text: root.options[1]
+                ToggleButton:
+                    text: root.options[2]
+                ToggleButton:
+                    text: root.options[3]
+        Button:
+            text: 'exit'
+            on_press: root.manager.current = 'Dictionary'
+            
 <Quintessential>:
     BoxLayout:
         orientation: 'vertical'
@@ -170,6 +198,15 @@ class Quintessential(Screen):
 class Dictionary_programming(Screen):
     pass
 
+class Questionnaire(Screen):
+    question = StringProperty("What is the meaning of 'Quintessential'?")
+    options = ListProperty(["being most perfect/typical example of sth", "absolutely necessary", "not genuine", "a person's knowledge/experience of sth"])
+    # def check_ans(self, choice, result):
+    #     if choice == "being most perfect/typical example of sth":
+    #         result = "Correct!"
+    #     elif choice != "being most perfect/typical example of sth":
+    #         result = "Incorrect!"
+
 class Calculator(Screen):
     display_text = StringProperty("")
     first_value = ""
@@ -220,6 +257,7 @@ class ScreenApp(App):
         sm.add_widget(Quintessential(name='Quintessential'))
         sm.add_widget(Dictionary_programming(name='Dictionary_definition'))
         sm.add_widget(Settings(name='Settings'))
+        sm.add_widget(Questionnaire(name='Questionnaire'))
         return sm
 
 if __name__ == '__main__':
