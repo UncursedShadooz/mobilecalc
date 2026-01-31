@@ -9,7 +9,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.lang import Builder
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty, NumericProperty
 
 # Define the screens in Kv language for cleaner structure
 Builder.load_string("""
@@ -72,14 +72,18 @@ Builder.load_string("""
             GridLayout:
                 cols: 2
                 rows: 2
-                ToggleButton:
+                Button:
                     text: root.options[0]
-                ToggleButton:
+                    on_release: root.check_ans(self.text)
+                Button:
                     text: root.options[1]
-                ToggleButton:
+                    on_release: root.check_ans(self.text)
+                Button:
                     text: root.options[2]
-                ToggleButton:
+                    on_release: root.check_ans(self.text)
+                Button:
                     text: root.options[3]
+                    on_release: root.check_ans(self.text)
         Button:
             text: 'exit'
             on_press: root.manager.current = 'Dictionary'
@@ -201,11 +205,25 @@ class Dictionary_programming(Screen):
 class Questionnaire(Screen):
     question = StringProperty("What is the meaning of 'Quintessential'?")
     options = ListProperty(["being most perfect/typical example of sth", "absolutely necessary", "not genuine", "a person's knowledge/experience of sth"])
-    # def check_ans(self, choice, result):
-    #     if choice == "being most perfect/typical example of sth":
-    #         result = "Correct!"
-    #     elif choice != "being most perfect/typical example of sth":
-    #         result = "Incorrect!"
+    result = StringProperty("")
+    score = NumericProperty(0)
+    answer_key = NumericProperty(0)
+    def check_ans(self, choice):
+        user_pick = self.options.index(choice)
+        self.result = ""
+        if user_pick == self.answer_key:
+            self.result = "Correct!"
+            self.score += 1
+        else:
+            self.result = "Incorrect!"
+        if self.score >= 1:
+            popup = Popup(title='Result',
+                          content=Label(text=f'Your score is: {self.score}'),
+                          size_hint=(None, None), size=(400, 200))
+            popup.open()
+
+class QuintessentialQuestionnaire(Screen):
+    pass
 
 class Calculator(Screen):
     display_text = StringProperty("")
