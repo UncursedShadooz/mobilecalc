@@ -1,3 +1,5 @@
+import os
+os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
 import kivy
 # kivy.require('2.3.1') # adjust the minimum required Kivy version as needed
 
@@ -65,6 +67,7 @@ Builder.load_string("""
         orientation: 'vertical'
         Label:
             text: 'Questionnaire'
+            size_hint_y: 0.2
         BoxLayout:
             orientation: 'vertical'
             Label:
@@ -85,7 +88,8 @@ Builder.load_string("""
                     text: root.options[3]
                     on_release: root.check_ans(self.text)
         Button:
-            text: 'exit'
+            text: 'Back to Dictionary'
+            size_hint_y: 0.2
             on_press: root.manager.current = 'Dictionary'
             
 <Quintessential>:
@@ -203,17 +207,34 @@ class Dictionary_programming(Screen):
     pass
 
 class Questionnaire(Screen):
-    question = StringProperty("What is the meaning of 'Quintessential'?")
-    options = ListProperty(["being most perfect/typical example of sth", "absolutely necessary", "not genuine", "a person's knowledge/experience of sth"])
+    question = StringProperty("Loading...")
+    options = ListProperty(["", "", "", ""])
     result = StringProperty("")
     score = NumericProperty(0)
     answer_key = NumericProperty(0)
+    question_list = {
+        "What is the meaning of 'Quintessential'?":["being most perfect/typical example of sth", "absolutely necessary", 
+                                                    "not genuine", "a person's knowledge/experience of sth"],
+        "What is the meaning of 'Dictionary' in programming?":["a data structure that holds a collection of data as a set of key-value pairs",
+                                                               "a data structure that holds a collection of data items or elements in a sequence",
+                                                               "symbolic names that refer to objects (values) stored in memory",
+                                                               "a reference work on a particular subject, the items of which are typically arranged in alphabetical order"]
+        }
+    def on_enter(self):
+        self.score = 0
+        q_key = list(self.question_list.keys())[0]
+        self.question = q_key
+        self.options = self.question_list[q_key]
+        self.answer_key = 0
     def check_ans(self, choice):
         user_pick = self.options.index(choice)
         self.result = ""
         if user_pick == self.answer_key:
             self.result = "Correct!"
-            self.score += 1
+            if self.score >= 1:
+                self.score += 0
+            elif self.score == 0:
+                self.score += 1
         else:
             self.result = "Incorrect!"
         if self.score >= 1:
