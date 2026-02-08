@@ -77,15 +77,19 @@ Builder.load_string("""
                 rows: 2
                 Button:
                     text: root.options[0]
+                    id: opt0
                     on_release: root.check_ans(self.text)
                 Button:
                     text: root.options[1]
+                    id: opt1
                     on_release: root.check_ans(self.text)
                 Button:
                     text: root.options[2]
+                    id: opt2
                     on_release: root.check_ans(self.text)
                 Button:
                     text: root.options[3]
+                    id: opt3
                     on_release: root.check_ans(self.text)
         Button:
             text: 'Back to Dictionary'
@@ -212,36 +216,95 @@ class Questionnaire(Screen):
     result = StringProperty("")
     score = NumericProperty(0)
     answer_key = NumericProperty(0)
-    question_list = {
-        "What is the meaning of 'Quintessential'?":["being most perfect/typical example of sth", "absolutely necessary", 
-                                                    "not genuine", "a person's knowledge/experience of sth"],
-        "What is the meaning of 'Dictionary' in programming?":["a data structure that holds a collection of data as a set of key-value pairs",
-                                                               "a data structure that holds a collection of data items or elements in a sequence",
-                                                               "symbolic names that refer to objects (values) stored in memory",
-                                                               "a reference work on a particular subject, the items of which are typically arranged in alphabetical order"]
-        }
+    # question_list = {
+    #     "What is the meaning of 'Quintessential'?":["being most perfect/typical example of sth", "absolutely necessary", 
+    #                                                 "not genuine", "a person's knowledge/experience of sth"],
+    #     "What is the meaning of 'Dictionary' in programming?":["a data structure that holds a collection of data as a set of key-value pairs",
+    #                                                            "a data structure that holds a collection of data items or elements in a sequence",
+    #                                                            "symbolic names that refer to objects (values) stored in memory",
+    #                                                            "a reference work on a particular subject, the items of which are typically arranged in alphabetical order"]
+    #     }
+    question_list = [
+    {
+        "question": "What is the meaning of 'Quintessential'?",
+        "options": [
+            "being most perfect/typical example of sth",
+            "absolutely necessary",
+            "not genuine",
+            "a person's knowledge/experience of sth"
+        ],
+        "correct": 0
+    },
+    {
+        "question": "What is the meaning of 'Dictionary' in programming?",
+        "options": [
+            "a data structure that holds a collection of data as a set of key-value pairs",
+            "a data structure that holds a collection of data items or elements in a sequence",
+            "symbolic names that refer to objects (values) stored in memory",
+            "a reference work on a particular subject, the items of which are typically arranged in alphabetical order"
+        ],
+        "correct": 0
+    }
+]
+    question_list = question_list
+
+    def load_question(self):
+        q = self.questions[self.current_index]
+        self.question = q["question"]
+        self.options = q["options"]
+        self.answer_key = q["correct"]
+
+        # reset buttons
+        for btn in self.ids.values():
+            btn.background_color = (1, 1, 1, 1)
+            btn.disabled = False
+
     def on_enter(self):
         self.score = 0
-        q_key = list(self.question_list.keys())[0]
-        self.question = q_key
-        self.options = self.question_list[q_key]
         self.answer_key = 0
-    def check_ans(self, choice):
-        user_pick = self.options.index(choice)
+
+        q = self.question_list[self.answer_key]
+
+        self.question = q["question"]
+        self.options = q["options"]
+        self.answer_key = q["correct"]
+
+        # reset buttons
+        for btn in self.ids.values():
+            btn.background_color = (1, 1, 1, 1)
+            btn.disabled = False
+
+    # def on_enter(self):
+    #     self.score = 0
+    #     q_key = list(self.question_list.keys())[0]
+    #     self.question = q_key
+    #     self.options = self.question_list[q_key]
+    #     self.answer_key = 0
+
+    def check_ans(self, choice_index):
+        correct_btn = self.ids[f"opt{self.answer_key}"]
+        chosen_btn = self.ids[f"opt{choice_index}"]
+        # user_pick = self.options.index(choice)
         self.result = ""
-        if user_pick == self.answer_key:
-            self.result = "Correct!"
-            if self.score >= 1:
-                self.score += 0
-            elif self.score == 0:
-                self.score += 1
+        if choice_index == self.answer_key:
+            correct_btn.background_color = (0, 1, 0, 1)
+            self.score += 1
+            popup.open()
         else:
-            self.result = "Incorrect!"
-        if self.score >= 1:
-            popup = Popup(title='Result',
+            chosen_btn.background_color = (1, 0, 0, 1)
+        for btn in self.ids.values():
+            btn.disabled = True
+        # if user_pick == self.answer_key:
+        #     self.result = "Correct!"
+        #     if self.score >= 1:
+        #         self.score += 0
+        #     elif self.score == 0:
+        #         self.score += 1
+        # else:
+        #     self.result = "Incorrect!"
+        popup = Popup(title='Result',
                           content=Label(text=f'Your score is: {self.score}'),
                           size_hint=(None, None), size=(400, 200))
-            popup.open()
 
 class QuintessentialQuestionnaire(Screen):
     pass
