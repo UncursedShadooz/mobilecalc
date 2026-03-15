@@ -23,7 +23,7 @@ Builder.load_string("""
                 text: 'Calculator'
                 on_press: root.manager.current = 'Calculator'
             Button:
-                text: 'Dictionary'
+                text: 'Quiz'
                 on_press: root.manager.current = 'Dictionary'
             Button:
                 text: 'Settings'
@@ -43,7 +43,7 @@ Builder.load_string("""
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: 'Welcome to the Dictionary!'
+            text: 'Welcome to the Quiz!'
             font_size: 32
         Button:
             text: 'Quintessential'
