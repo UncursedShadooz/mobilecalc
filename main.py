@@ -24,7 +24,7 @@ Builder.load_string("""
                 on_press: root.manager.current = 'Calculator'
             Button:
                 text: 'Quiz'
-                on_press: root.manager.current = 'Dictionary'
+                on_press: root.manager.current = 'Quiz'
             Button:
                 text: 'Settings'
                 on_press: root.manager.current = 'Settings'
@@ -39,7 +39,7 @@ Builder.load_string("""
             text: 'Exit'
             on_press: root.manager.current = 'Menu'
 
-<Dictionary>:
+<Quiz>:
     BoxLayout:
         orientation: 'vertical'
         Label:
@@ -65,17 +65,17 @@ Builder.load_string("""
             text: 'Quintessential means representing the most perfect or typical example of a quality or class.'
         Button:
             text: 'Back'
-            on_press: root.manager.current = 'Dictionary'
+            on_press: root.manager.current = 'Quiz'
 
-<Dictionary_programming>:
+<Quiz_programming>:
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: 'A dictionary is a collection of key-value pairs.'
+            text: 'A Quiz is a collection of key-value pairs.'
             font_size: 24
         Button:
             text: 'Back'
-            on_press: root.manager.current = 'Dictionary'
+            on_press: root.manager.current = 'Quiz'
 
 <Questionnaire>:
     BoxLayout:
@@ -109,9 +109,9 @@ Builder.load_string("""
                 on_release: root.check_ans(3)
 
         Button:
-            text: 'Back to Dictionary'
+            text: 'Back to Quiz'
             size_hint_y: 0.2
-            on_press: root.manager.current = 'Dictionary'
+            on_press: root.manager.current = 'Quiz'
 
 <Calculator>:
     BoxLayout:
@@ -196,13 +196,13 @@ class Menu(Screen):
 class Settings(Screen):
     pass
 
-class Dictionary(Screen):
+class Quiz(Screen):
     pass
 
 class Quintessential(Screen):
     pass
 
-class Dictionary_programming(Screen):
+class Quiz_programming(Screen):
     pass
 
 
@@ -220,7 +220,7 @@ class Questionnaire(Screen):
             "correct": 0
         },
         {
-            "question": "What is the meaning of 'Dictionary' in programming?",
+            "question": "What is the meaning of 'Quiz' in programming?",
             "options": [
                 "a data structure that holds a collection of data as a set of key-value pairs",
                 "a sequence of values",
@@ -228,6 +228,16 @@ class Questionnaire(Screen):
                 "a book of words"
             ],
             "correct": 0
+        },
+        {
+            "question": "What is 58 x 49?",
+            "options": [
+                "3261",
+                "2482",
+                "3216",
+                "2842"
+            ],
+            "correct": 3
         }
     ]
 
@@ -331,9 +341,9 @@ class ScreenApp(App):
 
         sm.add_widget(Menu(name='Menu'))
         sm.add_widget(Calculator(name='Calculator'))
-        sm.add_widget(Dictionary(name='Dictionary'))
+        sm.add_widget(Quiz(name='Quiz'))
         sm.add_widget(Quintessential(name='Quintessential'))
-        sm.add_widget(Dictionary_programming(name='Dictionary_definition'))
+        sm.add_widget(Quiz_programming(name='Dictionary_definition'))
         sm.add_widget(Settings(name='Settings'))
         sm.add_widget(Questionnaire(name='Questionnaire'))
 
